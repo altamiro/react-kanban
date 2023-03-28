@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import './styles.css';
 
-function App() {
+import { useState } from'react';
+
+import Navbar from './components/Navbar/Navbar';
+import TaskList from './components/TaskList/TaskList';
+
+/* const task = {
+  id: 0,
+  title: 'Nova Tarefa',
+  state: "pendente"
+} */
+
+let idAcc = 0
+const generateId = () => {
+  idAcc += 1
+  return idAcc
+}
+
+export default function App() {
+
+  const [tasks, setTasks] = useState([]);
+
+  const addTask = (title, state) => {
+    const newTask = {
+      id: generateId(),
+      title,
+      state
+    };
+    setTasks((existingTasks) => {
+      return [...existingTasks, newTask];
+    });
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar />
+      <div className='container'>
+        <TaskList title="Pendente" onAddTask={addTask} tasks={tasks} />
+      </div>
     </div>
   );
 }
-
-export default App;
